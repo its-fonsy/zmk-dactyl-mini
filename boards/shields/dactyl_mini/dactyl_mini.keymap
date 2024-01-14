@@ -1,24 +1,64 @@
+#include <be
+
 #include <behaviors.dtsi>
+#include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/keys.h>
 
 / {
+    behaviors {
+        mod_pref_tap: mod_pref_tap {
+            compatible = "zmk,behavior-hold-tap";
+            label = "MOD_PREF_TAP";
+            bindings = <&kp>, <&kp>;
+
+            #binding-cells = <2>;
+            tapping-term-ms = <200>;
+            flavor = "tap-preferred";
+        };
+    };
+
     keymap {
         compatible = "zmk,keymap";
 
-        default_layer {
-// --------------------------------------------------------------------------------------------------------------------------------------------------------------------
-// |   ESC   |    Q    |    W    |    E    |    R    |    T    |                                          |    Y    |    U    |    I    |    O    |    P    |    \    |
-// |   TAB   |    A    |    S    |    D    |    F    |    G    |                                          |    H    |    J    |    K    |    L    |    ;    |    '    |
-// |  SHIFT  |    Z    |    X    |    C    |    V    |    B    | CTRL+A  | CTRL+C  |  |  CTRL+V |  CTRL+X |    N    |    M    |    ,    |    .    |    /    |  R CTRL |
-//                               |   GUI   |   DEL   | RETURN  |  SPACE  | ESCAPE  |  |  RETURN |  SPACE  |   TAB   |   BSPC  |  R ALT  |
+        BASE {
+            // --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            // |   ESC   |    1    |    2    |    3    |    4    |    5    |                                          |    6    |    7    |    8    |    9    |    0    |    \    |
+            // |   CAPS  |    Q    |    W    |    E    |    R    |    T    |                                          |    Y    |    U    |    I    |    O    |    P    |    \    |
+            // |   TAB   |    A    |    S    |    D    |    F    |    G    |                                          |    H    |    J    |    K    |    L    |    ;    |    '    |
+            // |  SHIFT  |    Z    |    X    |    C    |    V    |    B    |                                          |    N    |    M    |    ,    |    .    |    /    |  R CTRL |
+            //                     |    -    |    +    |         |   GUI   | SPACE  | L1 |  RETURN |  SPACE  |   TAB   |   BSPC  |  R ALT  |
+
             bindings = <
-    &kp ESC    &kp 1    &kp 2    &kp 3     &kp 4     &kp 4                                                 &kp 6     &kp 7     &kp 8     &kp 9     &kp 0    &kp 1
-    &kp CAPS   &kp Q    &kp W    &kp E     &kp R     &kp T                                                 &kp Y     &kp U     &kp I     &kp O     &kp P    &kp 2
-    &kp TAB    &kp A    &kp S    &kp D     &kp F     &kp G                                                 &kp H     &kp J     &kp K     &kp L     &kp SEMI &kp 3
-    &kp LSHIFT &kp Z    &kp X    &kp C     &kp V     &kp B                                                 &kp N     &kp M     &kp COMMA &kp DOT   &kp FSLH &kp 4
-                                 &kp 1     &kp 2     &kp 3    &kp 4    &kp 5            &kp 1    &kp 2     &kp 3     &kp 4     &kp 5
-                                                              &kp 7    &kp 6            &kp 6    &kp 7
+&kp GRAVE   &kp N1  &kp N2     &kp N3    &kp N4  &kp N5                                                                                             &kp N6                   &kp N7  &kp N8     &kp N9     &kp N0    &kp PAGE_UP
+&kp CAPS    &kp Q   &kp W      &kp E     &kp R   &kp T                                                                                              &kp Y                    &kp U   &kp I      &kp O      &kp P     &kp PAGE_DOWN
+&caps_word  &kp A   &kp S      &kp D     &kp F   &kp G                                                                                              &kp H                    &kp J   &kp K      &kp L      &kp SEMI  &kp SQT
+&kp LSHIFT  &kp Z   &kp X      &kp C     &kp V   &kp B                                                                                              &kp N                    &kp M   &kp COMMA  &kp DOT    &kp FSLH  &kp TILDE
+                    &kp MINUS  &kp PLUS          &mod_pref_tap LGUI DEL  &mod_pref_tap LSHFT SPACE  &to 1       &to 2     &mod_pref_tap LSHIFT RET  &mod_pref_tap LGUI BSPC          &kp UNDER  &kp EQUAL
+                                                                         &mod_pref_tap LCTRL ESC    &kp RALT    &kp RALT  &mod_pref_tap LCTRL TAB
+            >;
+        };
+
+        NAV {
+            bindings = <
+&kp F11  &kp F1        &kp F2        &kp F3        &kp F4        &kp F5                                        &kp F6    &kp F7    &kp F8  &kp F9     &kp F10  &kp F12
+&trans   &bt BT_SEL 3  &bt BT_SEL 2  &bt BT_SEL 1  &bt BT_SEL 0  &bt BT_CLR                                    &kp HOME  &trans    &trans  &kp END    &trans   &trans
+&trans   &kp RALT      &kp LGUI      &kp LCTRL     &kp LSHIFT    &trans                                        &kp LEFT  &kp DOWN  &kp UP  &kp RIGHT  &trans   &trans
+&trans   &trans        &trans        &trans        &trans        &trans                                        &trans    &trans    &trans  &trans     &trans   &trans
+                       &trans        &trans                      &trans      &trans  &trans    &trans  &trans  &trans              &trans  &trans
+                                                                             &trans  &trans    &trans  &trans
+            >;
+        };
+
+        SYM {
+            bindings = <
+&trans  &trans  &trans  &trans                &trans                 &trans                                    &trans  &trans                &trans                 &trans  &trans  &trans
+&trans  &trans  &trans  &kp LEFT_BRACKET      &kp RIGHT_BRACKET      &trans                                    &trans  &trans                &trans                 &trans  &trans  &trans
+&trans  &trans  &trans  &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &trans                                    &trans  &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &trans  &trans  &trans
+&trans  &trans  &trans  &kp LEFT_BRACE        &kp RIGHT_BRACE        &trans                                    &trans  &trans                &trans                 &trans  &trans  &trans
+                &trans  &trans                                       &trans  &trans  &trans    &trans  &trans  &trans                        &trans                 &trans
+                                                                             &trans  &trans    &trans  &trans
             >;
         };
     };
 };
+
