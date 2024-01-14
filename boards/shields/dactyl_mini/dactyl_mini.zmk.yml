@@ -1,0 +1,12 @@
+file_format: "1"
+id: dactyl_mini
+name: Dactyl
+type: shield
+url: https://github.com/l4u/dactyl-manuform-mini-keyboard
+requires: [pro_micro]
+exposes:
+features:
+  - keys
+siblings:
+  - dactyl_mini_left
+  - dactyl_mini_right
